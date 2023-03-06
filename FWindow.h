@@ -13,7 +13,7 @@ class Shape;
 
 class FWindow : public BaseWindow<FWindow>
 {
-    static const int MAX_SHAPE_COUNT = 100;
+    static const int MAX_SHAPE_COUNT = 5000;
     static const int COUNT_CALLBACK_UMSG = 2;
     int currentShapes = 0;
 
@@ -27,7 +27,7 @@ class FWindow : public BaseWindow<FWindow>
 
     Shape *shapes[MAX_SHAPE_COUNT];
 
-    void (*msgCallbackFuncs[COUNT_CALLBACK_UMSG])(WPARAM, LPARAM);
+    void (*msgCallbackFuncs[COUNT_CALLBACK_UMSG])(FWindow*, WPARAM, LPARAM);
 
     public:
     
@@ -63,7 +63,7 @@ class FWindow : public BaseWindow<FWindow>
         return (D2D1_SIZE_F)size;
     }
 
-    void setMsgFunc(CBMSG uMsgType, void (*funcptr)(WPARAM, LPARAM)) {
+    void setMsgFunc(CBMSG uMsgType, void (*funcptr)(FWindow*, WPARAM, LPARAM)) {
         msgCallbackFuncs[uMsgType] = funcptr;
     }
 

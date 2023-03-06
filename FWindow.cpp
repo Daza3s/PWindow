@@ -64,10 +64,12 @@ void FWindow::removeAllShapes() {
         delete shapes[i];
         shapes[i] = nullptr;
     }
+    currentShapes = 0;
 }
 
 void FWindow::OnPaint()
 {
+    std::cout << "-> FWindow::OnPaint" << std::endl;
     HRESULT hr = CreateGraphicsResources();
     if (SUCCEEDED(hr))
     {
@@ -78,9 +80,12 @@ void FWindow::OnPaint()
 
         pRenderTarget->Clear( backGroundColor );
 
+        std::cout << "--Drawing Shapes" << std::endl;
         for(int i = 0;i < currentShapes;i++) {
+            std::cout << shapes[i] << " , " << currentShapes << std::endl;
             shapes[i]->draw(pRenderTarget);
         }
+        std::cout << "--finishid drawing" << std::endl;
 
         hr = pRenderTarget->EndDraw();
         if (FAILED(hr) || hr == D2DERR_RECREATE_TARGET)
@@ -89,6 +94,7 @@ void FWindow::OnPaint()
         }
         EndPaint(hwnd, &ps);
     }
+    std::cout << "<- FWindow::OnPaint" << std::endl;
 }
 
 void FWindow::Resize()
@@ -110,20 +116,24 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
     {
         case WM_SIZE:
             {
+                std::cout << "START SIZE" << std::endl;
                 if(msgCallbackFuncs[RESIZE]) {
-                    msgCallbackFuncs[RESIZE](wParam, lParam);
+                    msgCallbackFuncs[RESIZE](this, wParam, lParam);
                 }else {
                     Resize();
                 }
+                std::cout << "END SIZE" << std::endl;
                 return 0;
             }
         case WM_PAINT:
             {
+                std::cout << "START PAINT" << std::endl;
                 if(msgCallbackFuncs[ONPAINT]) {
-                    msgCallbackFuncs[ONPAINT](wParam, lParam);
+                    msgCallbackFuncs[ONPAINT](this, wParam, lParam);
                 }else {
                     OnPaint();
                 }
+                std::cout << "END PAINT" << std::endl;
                 return 0;
             }
         case WM_CLOSE: 
