@@ -59,6 +59,13 @@ bool FWindow::removeShape(Shape *_shape) {
     return removeShape(_shape->getId());
 }
 
+void FWindow::removeAllShapes() {
+    for(int i = 0;i < currentShapes;i++) {
+        delete shapes[i];
+        shapes[i] = nullptr;
+    }
+}
+
 void FWindow::OnPaint()
 {
     HRESULT hr = CreateGraphicsResources();

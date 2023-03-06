@@ -39,6 +39,7 @@ class FWindow : public BaseWindow<FWindow>
     bool addShape(Shape *_shape);
     bool removeShape(int id);
     bool removeShape(Shape *_shape);
+    void removeAllShapes();
 
     D2D1_SIZE_F getCanvasSize() {
         D2D1_SIZE_F size;
