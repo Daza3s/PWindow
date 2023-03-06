@@ -64,6 +64,7 @@ void FWindow::removeAllShapes() {
         delete shapes[i];
         shapes[i] = nullptr;
     }
+    currentShapes = 0;
 }
 
 void FWindow::OnPaint()
