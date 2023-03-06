@@ -1,6 +1,7 @@
 #pragma once
 #include "Window.h"
 #include <d2d1.h>
+#include <stdexcept>
 #pragma comment(lib, "d2d1")
 
 class Shape;
@@ -40,7 +41,15 @@ class FWindow : public BaseWindow<FWindow>
     bool removeShape(Shape *_shape);
 
     D2D1_SIZE_F getCanvasSize() {
-        return pRenderTarget->GetSize();
+        D2D1_SIZE_F size;
+        if(!pRenderTarget) {
+            HRESULT hr = CreateGraphicsResources();
+            if(FAILED(hr)) {
+                throw std::runtime_error("Failed to create Graphics resources");
+            }
+        }
+        size = pRenderTarget->GetSize();
+        return (D2D1_SIZE_F)size;
     }
 
     int test() {return 1;}
