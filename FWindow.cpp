@@ -110,12 +110,20 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
     {
         case WM_SIZE:
             {
-                Resize();
+                if(msgCallbackFuncs[RESIZE]) {
+                    msgCallbackFuncs[RESIZE](wParam, lParam);
+                }else {
+                    Resize();
+                }
                 return 0;
             }
         case WM_PAINT:
             {
-                OnPaint();
+                if(msgCallbackFuncs[ONPAINT]) {
+                    msgCallbackFuncs[ONPAINT](wParam, lParam);
+                }else {
+                    OnPaint();
+                }
                 return 0;
             }
         case WM_CLOSE: 

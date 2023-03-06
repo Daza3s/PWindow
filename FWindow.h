@@ -4,11 +4,17 @@
 #include <stdexcept>
 #pragma comment(lib, "d2d1")
 
+enum CBMSG {
+    RESIZE,
+    ONPAINT
+};
+
 class Shape;
 
 class FWindow : public BaseWindow<FWindow>
 {
     static const int MAX_SHAPE_COUNT = 100;
+    static const int COUNT_CALLBACK_UMSG = 2;
     int currentShapes = 0;
 
     ID2D1Factory            *pFactory;
@@ -21,6 +27,8 @@ class FWindow : public BaseWindow<FWindow>
 
     Shape *shapes[MAX_SHAPE_COUNT];
 
+    void (*msgCallbackFuncs[COUNT_CALLBACK_UMSG])(WPARAM, LPARAM);
+
     public:
     
     D2D1_COLOR_F backGroundColor = D2D1::ColorF(D2D1::ColorF::Moccasin);
@@ -29,7 +37,9 @@ class FWindow : public BaseWindow<FWindow>
         backGroundColor = color;
     }
 
-    FWindow() : pFactory(NULL), pRenderTarget(NULL) {}
+    FWindow() : pFactory(NULL), pRenderTarget(NULL) {
+        resetAllMsgFunc();
+    }
 
     PCWSTR  ClassName() const { return L"Test Window"; };
     LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -51,6 +61,20 @@ class FWindow : public BaseWindow<FWindow>
         }
         size = pRenderTarget->GetSize();
         return (D2D1_SIZE_F)size;
+    }
+
+    void setMsgFunc(CBMSG uMsgType, void (*funcptr)(WPARAM, LPARAM)) {
+        msgCallbackFuncs[uMsgType] = funcptr;
+    }
+
+    void resetMsgFunc(CBMSG uMsgType) {
+        msgCallbackFuncs[uMsgType] = nullptr;
+    }
+
+    void resetAllMsgFunc() {
+        for(int i = 0;i < COUNT_CALLBACK_UMSG;i++) {
+            msgCallbackFuncs[i] = nullptr;
+        }
     }
 
     int test() {return 1;}
