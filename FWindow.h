@@ -77,5 +77,9 @@ class FWindow : public BaseWindow<FWindow>
         }
     }
 
+   void callProtectedResize() {
+        Resize();
+    }
+
     int test() {return 1;}
 };
