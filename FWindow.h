@@ -79,5 +79,9 @@ class FWindow : public BaseWindow<FWindow>
         Resize();
     }
 
+    HWND getWindowHWND() {
+        return this->Window();
+    }
+
     int test() {return 1;}
 };
