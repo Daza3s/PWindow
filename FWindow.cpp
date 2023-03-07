@@ -107,24 +107,21 @@ void FWindow::Resize()
 }
 
 LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    int msgAsInt = (int)uMsg;
+    if(msgFuncs.find(msgAsInt) != msgFuncs.end()) {
+        msgFuncs[msgAsInt](wParam, lParam);
+        return 0;
+    }
     switch (uMsg)
     {
         case WM_SIZE:
             {
-                if(msgCallbackFuncs[RESIZE]) {
-                    msgCallbackFuncs[RESIZE](wParam, lParam);
-                }else {
-                    Resize();
-                }
+                Resize();
                 return 0;
             }
         case WM_PAINT:
             {
-                if(msgCallbackFuncs[ONPAINT]) {
-                    msgCallbackFuncs[ONPAINT](wParam, lParam);
-                }else {
-                    OnPaint();
-                }
+                OnPaint();
                 return 0;
             }
         case WM_CLOSE: 

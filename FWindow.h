@@ -1,5 +1,6 @@
 #pragma once
 #include "Window.h"
+#include <map>
 #include <d2d1.h>
 #include <stdexcept>
 #pragma comment(lib, "d2d1")
@@ -8,6 +9,8 @@ enum CBMSG {
     RESIZE,
     ONPAINT
 };
+
+typedef void (*msgCallbackFunc)(WPARAM, LPARAM);
 
 class Shape;
 
@@ -27,7 +30,7 @@ class FWindow : public BaseWindow<FWindow>
 
     Shape *shapes[MAX_SHAPE_COUNT];
 
-    void (*msgCallbackFuncs[COUNT_CALLBACK_UMSG])(WPARAM, LPARAM);
+    std::map<int, msgCallbackFunc> msgFuncs;
 
     public:
     
@@ -63,18 +66,16 @@ class FWindow : public BaseWindow<FWindow>
         return (D2D1_SIZE_F)size;
     }
 
-    void setMsgFunc(CBMSG uMsgType, void (*funcptr)(WPARAM, LPARAM)) {
-        msgCallbackFuncs[uMsgType] = funcptr;
+    void setMsgFunc(int uMsgType, void (*funcptr)(WPARAM, LPARAM)) {
+        msgFuncs[uMsgType] = funcptr;
     }
 
-    void resetMsgFunc(CBMSG uMsgType) {
-        msgCallbackFuncs[uMsgType] = nullptr;
+    void resetMsgFunc(int uMsgType) {
+        msgFuncs.erase(uMsgType);
     }
 
     void resetAllMsgFunc() {
-        for(int i = 0;i < COUNT_CALLBACK_UMSG;i++) {
-            msgCallbackFuncs[i] = nullptr;
-        }
+        msgFuncs.clear();
     }
 
    void callProtectedResize() {
