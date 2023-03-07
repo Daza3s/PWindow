@@ -5,10 +5,6 @@
 #include <stdexcept>
 #pragma comment(lib, "d2d1")
 
-enum CBMSG {
-    RESIZE,
-    ONPAINT
-};
 
 typedef void (*msgCallbackFunc)(WPARAM, LPARAM);
 
@@ -30,11 +26,7 @@ class FWindow : public BaseWindow<FWindow>
 
     Shape *shapes[MAX_SHAPE_COUNT];
 
-<<<<<<< HEAD
     std::map<int, msgCallbackFunc> msgFuncs;
-=======
-    void (*msgCallbackFuncs[COUNT_CALLBACK_UMSG])(FWindow*, WPARAM, LPARAM);
->>>>>>> a50ad898ecc5a5376ed3b378a6c3146068f7adc7
 
     public:
     
@@ -70,13 +62,8 @@ class FWindow : public BaseWindow<FWindow>
         return (D2D1_SIZE_F)size;
     }
 
-<<<<<<< HEAD
     void setMsgFunc(int uMsgType, void (*funcptr)(WPARAM, LPARAM)) {
         msgFuncs[uMsgType] = funcptr;
-=======
-    void setMsgFunc(CBMSG uMsgType, void (*funcptr)(FWindow*, WPARAM, LPARAM)) {
-        msgCallbackFuncs[uMsgType] = funcptr;
->>>>>>> a50ad898ecc5a5376ed3b378a6c3146068f7adc7
     }
 
     void resetMsgFunc(int uMsgType) {
