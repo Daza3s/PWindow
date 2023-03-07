@@ -114,39 +114,19 @@ void FWindow::Resize()
 LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
     int msgAsInt = (int)uMsg;
     if(msgFuncs.find(msgAsInt) != msgFuncs.end()) {
-        msgFuncs[msgAsInt](wParam, lParam);
+        msgFuncs[msgAsInt](this, wParam, lParam);
         return 0;
     }
     switch (uMsg)
     {
         case WM_SIZE:
             {
-<<<<<<< HEAD
                 Resize();
-=======
-                std::cout << "START SIZE" << std::endl;
-                if(msgCallbackFuncs[RESIZE]) {
-                    msgCallbackFuncs[RESIZE](this, wParam, lParam);
-                }else {
-                    Resize();
-                }
-                std::cout << "END SIZE" << std::endl;
->>>>>>> a50ad898ecc5a5376ed3b378a6c3146068f7adc7
                 return 0;
             }
         case WM_PAINT:
             {
-<<<<<<< HEAD
                 OnPaint();
-=======
-                std::cout << "START PAINT" << std::endl;
-                if(msgCallbackFuncs[ONPAINT]) {
-                    msgCallbackFuncs[ONPAINT](this, wParam, lParam);
-                }else {
-                    OnPaint();
-                }
-                std::cout << "END PAINT" << std::endl;
->>>>>>> a50ad898ecc5a5376ed3b378a6c3146068f7adc7
                 return 0;
             }
         case WM_CLOSE: 

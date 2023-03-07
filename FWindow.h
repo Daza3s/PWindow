@@ -5,8 +5,9 @@
 #include <stdexcept>
 #pragma comment(lib, "d2d1")
 
+class FWindow;
 
-typedef void (*msgCallbackFunc)(WPARAM, LPARAM);
+typedef void (*msgCallbackFunc)(FWindow*, WPARAM, LPARAM);
 
 class Shape;
 
@@ -62,7 +63,7 @@ class FWindow : public BaseWindow<FWindow>
         return (D2D1_SIZE_F)size;
     }
 
-    void setMsgFunc(int uMsgType, void (*funcptr)(WPARAM, LPARAM)) {
+    void setMsgFunc(int uMsgType, void (*funcptr)(FWindow*, WPARAM, LPARAM)) {
         msgFuncs[uMsgType] = funcptr;
     }
 
